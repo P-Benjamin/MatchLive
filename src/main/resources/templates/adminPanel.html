@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>Material Design for Bootstrap</title>
+  <!-- MDB icon -->
+  <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon" />
+  <!-- Font Awesome -->
+  <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  />
+  <!-- Google Fonts Roboto -->
+  <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+  />
+  <!-- MDB -->
+  <link rel="stylesheet" href="/css/mdb.min.css" />
+</head>
+<body>
+
+<h2>Manage Matches</h2>
+
+<h3>Add Match</h3>
+<form action="#" th:action="@{/admin/add}" method="post">
+  <label for="team1">Team 1:</label>
+  <input type="text" id="team1" name="team1">
+  <label for="team2">Team 2:</label>
+  <input type="text" id="team2" name="team2">
+  <button type="submit">Add Match</button>
+</form>
+
+<h3>Update Match</h3>
+<div th:each="match : ${matches}" class="d-flex flex-row justify-content-start mb-4">
+  <form th:action="@{/admin/update}" method="post">
+    <input type="hidden" name="id" th:value="${match.id}">
+    <input type="text" name="team1" th:value="${match.team1}">
+    <input type="text" name="team2" th:value="${match.team2}">
+    <input type="number" name="score1" th:value="${match.scoreTeam1}">
+    <input type="number" name="score2" th:value="${match.scoreTeam2}">
+    <button type="submit">Update</button>
+  </form>
+
+  <form th:action="@{/admin/delete}" method="post" style="display:inline;">
+    <input type="hidden" name="id" th:value="${match.id}">
+    <button type="submit">Delete</button>
+  </form>
+
+</div>
+
+<!-- MDB -->
+<script type="text/javascript" src="js/mdb.min.js"></script>
+<!-- Custom scripts -->
+<script type="text/javascript"></script>
+</body>
+</html>
