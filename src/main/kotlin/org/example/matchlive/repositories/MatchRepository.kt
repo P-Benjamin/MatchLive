@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface MatchRepository : JpaRepository<MatchEntity, Long> {
+    fun findByIsStartedTrueAndIsFinishFalse(): List<MatchEntity>
+    fun findByIsFinishTrue(): List<MatchEntity>
 
 }

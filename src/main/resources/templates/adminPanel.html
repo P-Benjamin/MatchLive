@@ -33,22 +33,58 @@
   <button type="submit">Add Match</button>
 </form>
 
-<h3>Update Match</h3>
-<div th:each="match : ${matches}" class="d-flex flex-row justify-content-start mb-4">
-  <form th:action="@{/admin/update}" method="post">
-    <input type="hidden" name="id" th:value="${match.id}">
-    <input type="text" name="team1" th:value="${match.team1}">
-    <input type="text" name="team2" th:value="${match.team2}">
-    <input type="number" name="score1" th:value="${match.scoreTeam1}">
-    <input type="number" name="score2" th:value="${match.scoreTeam2}">
-    <button type="submit">Update</button>
-  </form>
+<div class="container mt-5">
+  <h2>Administration des Matches</h2>
 
-  <form th:action="@{/admin/delete}" method="post" style="display:inline;">
-    <input type="hidden" name="id" th:value="${match.id}">
-    <button type="submit">Delete</button>
-  </form>
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Équipe 1</th>
+      <th>Équipe 2</th>
+      <th>Score Équipe 1</th>
+      <th>Score Équipe 2</th>
+      <th>Match Commencé</th>
+      <th>Match Terminé</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="match : ${matches}">
+      <form th:action="@{/admin/update}" method="post">
+        <td th:text="${match.id}"></td>
+        <td>
+          <input type="text" name="team1" th:value="${match.team1}" class="form-control" />
+        </td>
+        <td>
+          <input type="text" name="team2" th:value="${match.team2}" class="form-control" />
+        </td>
+        <td>
+          <input type="number" name="score1" th:value="${match.scoreTeam1}" class="form-control" />
+        </td>
+        <td>
+          <input type="number" name="score2" th:value="${match.scoreTeam2}" class="form-control" />
+        </td>
+        <td>
+          <input type="checkbox" name="isStarted" th:checked="${match.isStarted}" />
+        </td>
+        <td>
+          <input type="checkbox" name="isFinish" th:checked="${match.isFinish}" />
+        </td>
+        <td>
+          <input type="hidden" name="id" th:value="${match.id}" />
+          <button type="submit" class="btn btn-primary">Mettre à jour</button>
 
+      </form>
+
+          <form th:action="@{/admin/delete}" method="post" style="display:inline;">
+            <input type="hidden" name="id" th:value="${match.id}">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </td>
+    </tr>
+    </tbody>
+  </table>
 </div>
 
 <!-- MDB -->
