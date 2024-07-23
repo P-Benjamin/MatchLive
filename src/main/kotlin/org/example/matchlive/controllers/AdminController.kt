@@ -28,8 +28,20 @@ class AdminController (private val matchService: MatchService) {
     }
 
     @PostMapping("/update")
-    fun updateMatch(@RequestParam id: Long, @RequestParam team1: String, @RequestParam team2: String, @RequestParam score1: Int, @RequestParam score2: Int, model: Model): String {
-        val matchDto = MatchDto(id, team1, team2,score1, score2)
+    fun updateMatch(@RequestParam id: Long, @RequestParam team1: String, @RequestParam team2: String, @RequestParam score1: Int, @RequestParam score2: Int, @RequestParam isFinish: String?, @RequestParam isStarted: String?, model: Model): String {
+
+        var finish : Boolean = true
+        if(isFinish.isNullOrBlank()){
+            finish = false
+        }
+
+        var started : Boolean = true
+        if(isStarted.isNullOrBlank()){
+            started = false
+        }
+
+        val matchDto = MatchDto(id, team1, team2,score1, score2,finish,started)
+        println(matchDto);
         matchService.updateMatch(matchDto)
         model.addAttribute("matches", matchService.getAllMatches())
         return "redirect:/admin/matches"
