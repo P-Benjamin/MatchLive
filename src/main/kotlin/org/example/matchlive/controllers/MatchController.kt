@@ -6,7 +6,7 @@ import org.example.matchlive.services.MatchService
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("match")
+@RequestMapping("api")
 class MatchController (val matchService: MatchService){
 
     @PostMapping("/add")
@@ -36,4 +36,13 @@ class MatchController (val matchService: MatchService){
         return matchService.updateMatch(matchDto);
     }
 
+    @GetMapping("/onGoing")
+    fun getOnGoingMatchs(): List<MatchEntity> {
+        return matchService.getOngoingMatches();
+    }
+
+    @GetMapping("/finished")
+    fun getFinishedMatchs(): List<MatchEntity> {
+        return matchService.getFinishedMatches();
+    }
 }

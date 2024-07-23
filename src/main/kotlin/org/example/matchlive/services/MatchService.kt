@@ -31,12 +31,44 @@ class MatchService (val matchRepository: MatchRepository){
 
     fun updateMatch(matchDto: MatchDto) : MatchEntity? {
         val match = matchDto.id?.let { getMatchById(it) };
-            match?.scoreTeam1 = matchDto.scoreTeam1!!;
-            match?.scoreTeam2 = matchDto.scoreTeam2!!;
-            if (match != null) {
-                matchRepository.save(match)
-                return match
-            };
+        if(match != null){
+
+            if(matchDto.team1 != null){
+                match.team1 = matchDto.team1;
+            }
+
+            if(matchDto.team2 != null) {
+                match.team2 = matchDto.team2;
+            }
+
+            if(matchDto.scoreTeam1 != null){
+                match.scoreTeam1 = matchDto.scoreTeam1;
+            }
+
+            if(matchDto.scoreTeam2 != null) {
+                match.scoreTeam2 = matchDto.scoreTeam2;
+            }
+
+            if(matchDto.isFinish != null){
+                match.isFinish = matchDto.isFinish;
+            }
+
+            if(matchDto.isStarted != null) {
+                match.isStarted = matchDto.isStarted;
+            }
+
+            matchRepository.save(match)
+            return match
+        }
+        println("UPDATE FAILED")
         return null;
+    }
+
+    fun getOngoingMatches(): List<MatchEntity> {
+        return matchRepository.findByIsStartedTrueAndIsFinishFalse()
+    }
+
+    fun getFinishedMatches(): List<MatchEntity> {
+        return matchRepository.findByIsFinishTrue()
     }
 }
