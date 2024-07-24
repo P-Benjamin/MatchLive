@@ -34,23 +34,77 @@
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="ongoing" role="tabpanel" aria-labelledby="ongoing-tab">
-            <div th:each="match : ${ongoingMatches}" class="d-flex flex-row justify-content-start mb-4">
-                <div>
-                    <strong th:text="${match.team1}"></strong> vs <strong th:text="${match.team2}"></strong>
-                    <p>Score: <span th:text="${match.scoreTeam1} + '-' + ${match.scoreTeam2}"></span></p>
-                </div>
+            <div id="ongoingMatchesContainer">
+                <!-- Matches en cours seront ajoutés ici -->
             </div>
         </div>
         <div class="tab-pane fade" id="finished" role="tabpanel" aria-labelledby="finished-tab">
-            <div th:each="match : ${finishedMatches}" class="d-flex flex-row justify-content-start mb-4">
-                <div>
-                    <strong th:text="${match.team1}"></strong> vs <strong th:text="${match.team2}"></strong>
-                    <p>Score: <span th:text="${match.scoreTeam1} + '-' +  ${match.scoreTeam2}"></span></p>
-                </div>
+            <div id="finishedMatchesContainer">
+                <!-- Matches terminés seront ajoutés ici -->
             </div>
         </div>
     </div>
 </div>
+
+<!-- JS Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/sockjs/latest/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+<!-- WebSocket Client Script -->
+<script>
+    // Créez une connexion WebSocket
+    let CHANNEL_NAME = "/ws/myChannel";
+    //Connexion au serveur de webSocket
+    let stompClient = Stomp.over(new SockJS('/ws/chat-app'));
+
+
+    stompClient.connect({}, function (frame) {
+        // On écoute un Channel
+        stompClient.subscribe(CHANNEL_NAME, function (messageOutput) {
+            let messageList = JSON.parse(messageOutput.body);
+            console.log(messageList)
+            updateMatchDisplay(messageList);
+        });
+    }, function (error) {
+        // Gestionnaire d'erreurs
+        alert("Une erreur s'est produite lors de la connexion WebSocket : " + error);
+    });
+
+
+    // Fonction pour mettre à jour l'affichage des matchs
+    function updateMatchDisplay(matches) {
+        // Nettoyez les conteneurs avant de les remplir
+
+        console.log(matches);
+        document.getElementById("ongoingMatchesContainer").innerHTML = "";
+        document.getElementById("finishedMatchesContainer").innerHTML = "";
+
+        // Itérez sur les matchs et mettez-les à jour dans les bons onglets
+        matches.forEach(function(match) {
+            const matchElement = `<div class="d-flex flex-row justify-content-start mb-4">
+                    <div>
+                        <strong>${match.team1}</strong> vs <strong>${match.team2}</strong>
+                        <p>Score: <span>${match.scoreTeam1} - ${match.scoreTeam2}</span></p>
+                    </div>
+                </div>`;
+
+            if (match.isFinish) {
+                document.getElementById("finishedMatchesContainer").innerHTML += matchElement;
+            } else {
+                document.getElementById("ongoingMatchesContainer").innerHTML += matchElement;
+            }
+        });
+    }
+
+    // Écoutez les messages du WebSocket
+    socket.onmessage = function(event) {
+        var matches = JSON.parse(event.data);
+        updateMatchDisplay(matches);
+    };
+</script>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

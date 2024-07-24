@@ -2,6 +2,7 @@ package org.example.matchlive.controllers
 
 import org.example.matchlive.configurations.CHANNEL_NAME
 import org.example.matchlive.dtos.MatchDto
+import org.example.matchlive.entities.MatchEntity
 import org.example.matchlive.services.MatchService
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Controller
@@ -25,14 +26,20 @@ class AdminController (private val matchService: MatchService, private val messa
     fun addMatch(@RequestParam team1: String, @RequestParam team2: String, model: Model): String {
         val matchDto = MatchDto(null, team1, team2)
         val match = matchService.createMatch(matchDto)
-
-        messagingTemplate.convertAndSend(CHANNEL_NAME, match!!)
+        val matchList = matchService.getAllMatches()
+        messagingTemplate.convertAndSend(CHANNEL_NAME, matchList)
 
         return "redirect:/admin/matches"
     }
 
     @PostMapping("/update")
-    fun updateMatch(@RequestParam id: Long, @RequestParam team1: String, @RequestParam team2: String, @RequestParam score1: Int, @RequestParam score2: Int, @RequestParam isFinish: String?, @RequestParam isStarted: String?, model: Model): String {
+    fun updateMatch(@RequestParam id: Long,
+                    @RequestParam team1: String,
+                    @RequestParam team2: String,
+                    @RequestParam score1: Int,
+                    @RequestParam score2: Int,
+                    @RequestParam isFinish: String?,
+                    @RequestParam isStarted: String?, model: Model) : String {
 
         var finish : Boolean = true
         if(isFinish.isNullOrBlank()){
@@ -49,7 +56,16 @@ class AdminController (private val matchService: MatchService, private val messa
 
         val match = matchService.updateMatch(matchDto)
 
-        messagingTemplate.convertAndSend(CHANNEL_NAME, match!!)
+        val matchList = matchService.getAllMatches().toCollection(mutableListOf<MatchEntity>());
+        for (index in matchList.indices) {
+            if (matchList[index].id == matchDto.id) {
+                matchList.removeAt(index)
+                println(matchList)
+                matchList.add(index,match!!)
+                println(matchList)
+            }
+        }
+        messagingTemplate.convertAndSend(CHANNEL_NAME, matchList)
 
         return "redirect:/admin/matches"
     }
