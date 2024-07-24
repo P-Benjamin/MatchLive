@@ -6,7 +6,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge" />
   <title>Material Design for Bootstrap</title>
   <!-- MDB icon -->
-  <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/img/mdb-favicon.ico" type="image/x-icon" />
   <!-- Font Awesome -->
   <link
           rel="stylesheet"
@@ -51,44 +51,44 @@
     </thead>
     <tbody>
     <tr th:each="match : ${matches}">
-      <form th:action="@{/admin/update}" method="post">
-        <td th:text="${match.id}"></td>
-        <td>
+      <td class="text-center align-middle" th:text="${match.id}"></td>
+      <td class="text-center align-middle">
+        <form th:action="@{/admin/update}" method="post" style="display:inline;">
           <input type="text" name="team1" th:value="${match.team1}" class="form-control" />
-        </td>
-        <td>
-          <input type="text" name="team2" th:value="${match.team2}" class="form-control" />
-        </td>
-        <td>
-          <input type="number" name="score1" th:value="${match.scoreTeam1}" class="form-control" />
-        </td>
-        <td>
-          <input type="number" name="score2" th:value="${match.scoreTeam2}" class="form-control" />
-        </td>
-        <td>
-          <input type="checkbox" name="isStarted" th:checked="${match.isStarted}" />
-        </td>
-        <td>
-          <input type="checkbox" name="isFinish" th:checked="${match.isFinish}" />
-        </td>
-        <td>
-          <input type="hidden" name="id" th:value="${match.id}" />
-          <button type="submit" class="btn btn-primary">Mettre à jour</button>
+      </td>
+      <td class="text-center align-middle">
+        <input type="text" name="team2" th:value="${match.team2}" class="form-control" />
+      </td>
+      <td class="text-center align-middle">
+        <input type="number" name="score1" th:value="${match.scoreTeam1}" class="form-control" />
+      </td>
+      <td class="text-center align-middle">
+        <input type="number" name="score2" th:value="${match.scoreTeam2}" class="form-control" />
+      </td>
+      <td class="text-center align-middle">
+        <input type="checkbox" name="isStarted" th:checked="${match.isStarted}" />
+      </td>
+      <td class="text-center align-middle">
+        <input type="checkbox" name="isFinish" th:checked="${match.isFinish}" />
+      </td>
+      <td class="text-center align-middle">
+        <input type="hidden" name="id" th:value="${match.id}" />
+        <button type="submit" class="btn btn-primary" style="margin-bottom: 8px;">Mettre à jour</button>
+        </form>
 
-      </form>
-
-          <form th:action="@{/admin/delete}" method="post" style="display:inline;">
-            <input type="hidden" name="id" th:value="${match.id}">
-            <button type="submit" class="btn btn-danger">Delete</button>
-          </form>
-        </td>
+        <!-- Formulaire pour supprimer le match -->
+        <form th:action="@{/admin/delete}" method="post" style="display:inline;">
+          <input type="hidden" name="id" th:value="${match.id}">
+          <button type="submit" class="btn btn-danger">Supprimer</button>
+        </form>
+      </td>
     </tr>
     </tbody>
   </table>
 </div>
 
 <!-- MDB -->
-<script type="text/javascript" src="js/mdb.min.js"></script>
+<script type="text/javascript" src="/js/mdb.min.js"></script>
 <!-- Custom scripts -->
 <script type="text/javascript"></script>
 </body>

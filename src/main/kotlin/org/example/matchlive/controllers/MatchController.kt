@@ -9,39 +9,39 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("api")
 class MatchController (val matchService: MatchService){
 
-    @PostMapping("/add")
+    @PostMapping("/admin/add")
     fun addMatch(@RequestBody matchDto: MatchDto): MatchEntity? {
         return matchService.createMatch(matchDto);
     }
 
-    @GetMapping("/get")
+    @GetMapping("/public/get")
     fun getMatch(matchId : String): MatchEntity? {
         var id = matchId.toLong()
         return matchService.getMatchById(id);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/public/getAll")
     fun getAllMatchs(): List<MatchEntity> {
         return matchService.getAllMatches();
     }
 
-    @GetMapping("/delete")
+    @GetMapping("/admin/delete")
     fun deleteMatchById(matchId: String): Long {
         var id = matchId.toLong()
         return matchService.deleteMatch(id);
     }
 
-    @PostMapping("/update")
+    @PostMapping("/admin/update")
     fun updateMatch(@RequestBody matchDto: MatchDto): MatchEntity? {
         return matchService.updateMatch(matchDto);
     }
 
-    @GetMapping("/onGoing")
+    @GetMapping("/public/onGoing")
     fun getOnGoingMatchs(): List<MatchEntity> {
         return matchService.getOngoingMatches();
     }
 
-    @GetMapping("/finished")
+    @GetMapping("/public/finished")
     fun getFinishedMatchs(): List<MatchEntity> {
         return matchService.getFinishedMatches();
     }

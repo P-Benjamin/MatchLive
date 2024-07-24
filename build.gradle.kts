@@ -47,7 +47,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 
 	//Spring security
-	//implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-security")
 
 
 	//implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
